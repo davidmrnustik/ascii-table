@@ -9,6 +9,7 @@
 
 #include <vector>
 #include <string>
+//#include <nlohmann/json.hpp>
 
 typedef std::vector<std::string> row_type;
 typedef std::vector<row_type> table_type;
@@ -23,19 +24,21 @@ public:
     void formatChanged();
 
     AsciiTable();
-    explicit AsciiTable(int format);
+    AsciiTable(int format);
     void createTable();
     void formatTable();
     void printTable();
     table_type getData();
+    std::string toString();
+//    std::string getStringData();
     int getColumns();
 
 private:
     static std::string getStringFromInt(const std::string &s, num_base base);
-    static std::string binString(int a);
+    static std::string binString(char a);
     void recalculateColumns();
     table_type m_table;
-    int m_format;
+    int m_format = 1;
     int m_columns {};
     const row_type header {{"Dec", "Oct", "Hex", "Binary", "C"}};
 };

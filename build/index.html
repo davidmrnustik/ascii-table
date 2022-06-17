@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head></head>
+<body>
+<script>
+    var Module = {
+        onRuntimeInitialized: function() {
+            // console.log(Module._getNum())
+            // var getTable = Module.cwrap('getTable', 'number', ['number']);
+            // var res = Module.ccall('getNum', 'number', ['number'], [22]);
+            // const table = Module._getTable(4);
+            // const t = table(4);
+            // console.log(res)
+            //   getTable(4)
+            //   console.log('getTable result: ' + Module.getNum(42))
+            const t = Module.getTable(4);
+            console.log("tohle je t: ", JSON.parse(t));
+        }
+    };
+</script>
+<script src="ascii_table.wasm.js"></script>
+
+</body>
+</html>

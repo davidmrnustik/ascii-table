@@ -6,7 +6,8 @@
 #include <sstream>
 #include "ascii_table.h"
 
-AsciiTable::AsciiTable() : m_format(1) {
+AsciiTable::AsciiTable() {
+    std::cout << "from constructor" << m_format << std::endl;
     createTable();
 }
 
@@ -20,6 +21,13 @@ table_type AsciiTable::getData()
 {
     return m_table;
 }
+
+//std::string AsciiTable::getStringData()
+//{
+//    nlohmann::json json(m_table);
+//    return json.dump();
+//}
+
 
 void AsciiTable::formatTable()
 {
@@ -36,15 +44,17 @@ void AsciiTable::formatTable()
 
     formatted_table.push_back(formatted_header);
 
-    size_t table_size = m_table.size();
-    size_t row_size = table_size / m_format;
+    int table_size = m_table.size();
+//    std::cout << "m format: " << m_format << std::endl;
+    int row_size = table_size / m_format;
+//    std::cout << "table size: " << row_size << std::endl;
 
-    for(size_t i = 1; i < row_size; i++)
+    for(int i = 1; i <= row_size; i++)
     {
         row_type row;
         for(int f = 0; f < m_format; f++)
         {
-            for(auto & c : m_table[i  + row_size * f])
+            for(auto & c : m_table[i + row_size * f])
                 row.push_back(c);
         }
         formatted_table.push_back(row);
@@ -105,7 +115,7 @@ std::string AsciiTable::getStringFromInt(const std::string &s, num_base base)
     return result;
 }
 
-std::string AsciiTable::binString(int a)
+std::string AsciiTable::binString(char a)
 {
     static char b[9];
     int i;
@@ -142,4 +152,9 @@ int AsciiTable::getColumns()
 
 void AsciiTable::formatChanged() {
 
+}
+
+std::string AsciiTable::toString() {
+
+    return "";
 }
