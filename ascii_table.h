@@ -9,7 +9,6 @@
 
 #include <vector>
 #include <string>
-//#include <nlohmann/json.hpp>
 
 typedef std::vector<std::string> row_type;
 typedef std::vector<row_type> table_type;
@@ -29,8 +28,7 @@ public:
     void formatTable();
     void printTable();
     table_type getData();
-    std::string toString();
-//    std::string getStringData();
+    std::string getStringData();
     int getColumns();
 
 private:

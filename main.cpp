@@ -8,9 +8,9 @@ std::string getTable(int format) {
     AsciiTable asciiTable;
     std::cout << "from getTable " << format << std::endl;
     asciiTable.setFormat(format);
-    asciiTable.printTable();
-    return "";
-//    return asciiTable.getStringData();
+//    asciiTable.printTable();
+//    return "";
+    return asciiTable.getStringData();
 }
 int getNum(int n) {
     return n;

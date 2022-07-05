@@ -22,11 +22,37 @@ table_type AsciiTable::getData()
     return m_table;
 }
 
-//std::string AsciiTable::getStringData()
-//{
-//    nlohmann::json json(m_table);
-//    return json.dump();
-//}
+std::string AsciiTable::getStringData()
+{
+    std::stringstream ss;
+
+    ss << "[";
+
+    std::cout << "m_table size is: " << m_table.size() << std::endl;
+    for(int i = 0, l = m_table.size(); i < l; i++) {
+        row_type row = m_table[i];
+        ss << "[";
+
+        for(int j = 0, ll = row.size(); j < ll; j++) {
+            std::string col = row[j];
+
+            if (col == "\\") {
+                ss << "\"\\\\\"";
+            } else if (col == "\"") {
+                ss << "\"\\\"\"";
+            } else {
+                ss << "\"" << col << "\"";
+            }
+
+            ss << (j != ll - 1 ? "," : "");
+        }
+        ss << (i != l - 1 ? "]," : "]");
+
+    }
+    ss << "]";
+
+    return ss.str();
+}
 
 
 void AsciiTable::formatTable()
@@ -152,9 +178,4 @@ int AsciiTable::getColumns()
 
 void AsciiTable::formatChanged() {
 
-}
-
-std::string AsciiTable::toString() {
-
-    return "";
 }
