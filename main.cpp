@@ -7,7 +7,7 @@ using namespace emscripten;
 std::string getTable(int format, bool extended) {
     AsciiTable asciiTable(extended);
     std::cout << "from getTable " << format << std::endl;
-    asciiTable.setFormat(format, extended);
+    asciiTable.setFormat(format);
 //    asciiTable.printTable();
 //    return "";
     return asciiTable.getStringData();

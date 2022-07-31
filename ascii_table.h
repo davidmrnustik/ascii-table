@@ -6,18 +6,17 @@
 #define ASCIITABLE_QT_ASCII_TABLE_H
 #define DEFAULT_COLUMN_SIZE 5
 #define DEFAULT_TABLE_SIZE 128
-#define EXTENDED_TABLE_SIZE 255
 
 #include <vector>
 #include <string>
-#include <map>
+#include <unordered_map>
 
 typedef std::vector<std::string> row_type;
 typedef std::vector<row_type> table_type;
 
 enum class num_base { o, d, h };
 
-static std::map<std::string, std::string> characters {
+static std::unordered_map<std::string, std::string> characters {
     {"0", "NULL"},
     {"1", "SOH"},
     {"2", "STX"},
@@ -54,7 +53,7 @@ static std::map<std::string, std::string> characters {
     {"127", "DEL"}
 };
 
-static std::map<std::string, std::string> description {
+static std::unordered_map<std::string, std::string> description {
     {"0", "Null"},
     {"1", "Start of Heading"},
     {"2", "Start of Text"},
@@ -185,10 +184,45 @@ static std::map<std::string, std::string> description {
     {"127", "Delete"}
 };
 
+static std::unordered_map<std::string, std::string> htmlEntityNames {
+    {"33", "&excl;"},
+    {"34", "&quot;"},
+    {"35", "&num;"},
+    {"36", "&dollar;"},
+    {"37", "&percnt;"},
+    {"38", "&amp;"},
+    {"39", "&apos;"},
+    {"40", "&lpar;"},
+    {"41", "&rpar;"},
+    {"42", "&ast;"},
+    {"43", "&plus;"},
+    {"44", "&comma;"},
+    {"45", "&minus;"},
+    {"46", "&period;"},
+    {"47", "&sol;"},
+    {"58", "&colon;"},
+    {"59", "&semi;"},
+    {"60", "&lt;"},
+    {"61", "&equals;"},
+    {"62", "&gt;"},
+    {"63", "&quest;"},
+    {"64", "&commat;"},
+    {"91", "&lsqb;"},
+    {"92", "&bsol;"},
+    {"93", "&rsqb;"},
+    {"94", "&hat;"},
+    {"95", "&lowbar;"},
+    {"96", "&grave;"},
+    {"123", "&lcub;"},
+    {"124", "&verbar;"},
+    {"125", "&rcub;"},
+    {"126", "&tilde;"}
+};
+
 class AsciiTable {
 
 public:
-    void setFormat(const int &val, bool extended);
+    void setFormat(const int &val);
     int format() const { return m_format; }
     void formatChanged();
 
@@ -210,7 +244,7 @@ private:
     int m_format = 1;
     int m_columns {};
     const row_type header {{"Dec", "Oct", "Hex", "Binary", "Char", "Description"}};
-
+    const row_type header_extended {{"Dec", "Oct", "Hex", "Binary", "HTML Code", "HTML Name", "Char", "Description"}};
 };
 
 #endif //ASCIITABLE_QT_ASCII_TABLE_H
