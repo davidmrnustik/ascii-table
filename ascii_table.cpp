@@ -101,9 +101,13 @@ void AsciiTable::formatTable()
 
 void AsciiTable::createTable(bool extended)
 {
-    m_table.push_back(header);
+    if (extended) {
+        m_table.push_back(header_extended);
+    } else {
+        m_table.push_back(header);
+    }
 //    std::cout << "my extended: " << extended << std::endl;
-    int size = extended ? EXTENDED_TABLE_SIZE : DEFAULT_TABLE_SIZE;
+    int size = DEFAULT_TABLE_SIZE;
 //    std::cout << "my size: " << size << std::endl;
 
     for(int i = 0; i < size; i++)
@@ -112,15 +116,35 @@ void AsciiTable::createTable(bool extended)
         std::string n8 = getStringFromInt(s, num_base::o);
         std::string n16 = getStringFromInt(s, num_base::h);
         std::string sc {};
+        std::string desc = description[s];
 
         if (i <= 32 || i == 127) {
             sc = characters[s];
         } else {
             sc = char(i);
         }
-        std::string desc = description[s];
 
-        row_type row { s, n8, n16, binString(i), sc, desc};
+        row_type row;
+
+        if (extended) {
+            std::string htmlEntity;
+            std::string htmlCode = "&#" + std::to_string(i);
+
+            std::unordered_map<std::string,std::string>::const_iterator got = htmlEntityNames.find (s);
+
+            if (got == htmlEntityNames.end()) {
+                htmlEntity = " ";
+            } else {
+                htmlEntity = got->second;
+            }
+
+//            std::cout << "got " << got->first << std::endl;
+
+            row = { s, n8, n16, binString(i), htmlCode, htmlEntity, sc, desc };
+        } else {
+            row = { s, n8, n16, binString(i), sc, desc};
+        }
+
         m_table.push_back(row);
     }
     recalculateColumns();
@@ -179,14 +203,14 @@ std::string AsciiTable::binString(char a)
     return b;
 }
 
-void AsciiTable::setFormat(const int &val, bool extended)
+void AsciiTable::setFormat(const int &val)
 {
     m_format = val;
     formatChanged();
     formatTable();
 
-    if (m_table.empty())
-        createTable(extended);
+//    if (m_table.empty())
+//        createTable();
 }
 
 void AsciiTable::recalculateColumns()
