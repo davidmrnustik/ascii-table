@@ -12,6 +12,11 @@ AsciiTable::AsciiTable() {
     createTable();
 }
 
+AsciiTable::AsciiTable(bool extended) {
+    std::cout << "from constructor" << m_format << std::endl;
+    createTable(extended);
+}
+
 AsciiTable::AsciiTable(int format) : m_format(format)
 {
     createTable();
@@ -58,9 +63,6 @@ std::string AsciiTable::getStringData()
 
 void AsciiTable::formatTable()
 {
-    if (m_table.empty())
-        createTable();
-
     table_type formatted_table;
 
     row_type formatted_header;
@@ -97,11 +99,14 @@ void AsciiTable::formatTable()
     recalculateColumns();
 }
 
-void AsciiTable::createTable()
+void AsciiTable::createTable(bool extended)
 {
     m_table.push_back(header);
+//    std::cout << "my extended: " << extended << std::endl;
+    int size = extended ? EXTENDED_TABLE_SIZE : DEFAULT_TABLE_SIZE;
+//    std::cout << "my size: " << size << std::endl;
 
-    for(int i = 0; i < DEFAULT_TABLE_SIZE; i++)
+    for(int i = 0; i < size; i++)
     {
         std::string s = std::to_string(i);
         std::string n8 = getStringFromInt(s, num_base::o);
@@ -113,8 +118,9 @@ void AsciiTable::createTable()
         } else {
             sc = char(i);
         }
+        std::string desc = description[s];
 
-        row_type row { s, n8, n16, binString(i), sc};
+        row_type row { s, n8, n16, binString(i), sc, desc};
         m_table.push_back(row);
     }
     recalculateColumns();
@@ -173,11 +179,14 @@ std::string AsciiTable::binString(char a)
     return b;
 }
 
-void AsciiTable::setFormat(const int &val)
+void AsciiTable::setFormat(const int &val, bool extended)
 {
     m_format = val;
     formatChanged();
     formatTable();
+
+    if (m_table.empty())
+        createTable(extended);
 }
 
 void AsciiTable::recalculateColumns()
