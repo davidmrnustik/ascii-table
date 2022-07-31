@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <sstream>
+#include <math.h>
 #include "ascii_table.h"
 
 AsciiTable::AsciiTable() {
@@ -70,18 +71,25 @@ void AsciiTable::formatTable()
 
     formatted_table.push_back(formatted_header);
 
-    int table_size = m_table.size();
-//    std::cout << "m format: " << m_format << std::endl;
-    int row_size = table_size / m_format;
-//    std::cout << "table size: " << row_size << std::endl;
+    double table_size = m_table.size() - 1;
+//    std::cout << "m table_size: " << table_size << std::endl;
+    int row_size = std::ceil(table_size / m_format);
+//    std::cout << "row_size: " << row_size << std::endl;
 
     for(int i = 1; i <= row_size; i++)
     {
         row_type row;
         for(int f = 0; f < m_format; f++)
         {
-            for(auto & c : m_table[i + row_size * f])
-                row.push_back(c);
+            int index = i + row_size * f;
+
+            if (index <= table_size) {
+                for(auto & c : m_table[index]) {
+                    if (!c.empty()) {
+                        row.push_back(c);
+                    }
+                }
+            }
         }
         formatted_table.push_back(row);
     }
@@ -98,8 +106,14 @@ void AsciiTable::createTable()
         std::string s = std::to_string(i);
         std::string n8 = getStringFromInt(s, num_base::o);
         std::string n16 = getStringFromInt(s, num_base::h);
-        char c = i > 31 ? char(i) : '-';
-        std::string sc {c};
+        std::string sc {};
+
+        if (i <= 32 || i == 127) {
+            sc = characters[s];
+        } else {
+            sc = char(i);
+        }
+
         row_type row { s, n8, n16, binString(i), sc};
         m_table.push_back(row);
     }
