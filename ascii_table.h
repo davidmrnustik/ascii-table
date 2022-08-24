@@ -224,7 +224,6 @@ class AsciiTable {
 public:
     void setFormat(const int &val);
     int format() const { return m_format; }
-    void formatChanged();
 
     AsciiTable();
     AsciiTable(bool extended);

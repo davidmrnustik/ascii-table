@@ -8,12 +8,10 @@
 #include "ascii_table.h"
 
 AsciiTable::AsciiTable() {
-    std::cout << "from constructor" << m_format << std::endl;
     createTable();
 }
 
 AsciiTable::AsciiTable(bool extended) {
-    std::cout << "from constructor" << m_format << std::endl;
     createTable(extended);
 }
 
@@ -34,7 +32,6 @@ std::string AsciiTable::getStringData()
 
     ss << "[";
 
-    std::cout << "m_table size is: " << m_table.size() << std::endl;
     for(int i = 0, l = m_table.size(); i < l; i++) {
         row_type row = m_table[i];
         ss << "[";
@@ -74,9 +71,7 @@ void AsciiTable::formatTable()
     formatted_table.push_back(formatted_header);
 
     double table_size = m_table.size() - 1;
-//    std::cout << "m table_size: " << table_size << std::endl;
     int row_size = std::ceil(table_size / m_format);
-//    std::cout << "row_size: " << row_size << std::endl;
 
     for(int i = 1; i <= row_size; i++)
     {
@@ -106,9 +101,8 @@ void AsciiTable::createTable(bool extended)
     } else {
         m_table.push_back(header);
     }
-//    std::cout << "my extended: " << extended << std::endl;
+
     int size = DEFAULT_TABLE_SIZE;
-//    std::cout << "my size: " << size << std::endl;
 
     for(int i = 0; i < size; i++)
     {
@@ -137,8 +131,6 @@ void AsciiTable::createTable(bool extended)
             } else {
                 htmlEntity = got->second;
             }
-
-//            std::cout << "got " << got->first << std::endl;
 
             row = { s, n8, n16, binString(i), htmlCode, htmlEntity, sc, desc };
         } else {
@@ -206,11 +198,7 @@ std::string AsciiTable::binString(char a)
 void AsciiTable::setFormat(const int &val)
 {
     m_format = val;
-    formatChanged();
     formatTable();
-
-//    if (m_table.empty())
-//        createTable();
 }
 
 void AsciiTable::recalculateColumns()
@@ -221,8 +209,4 @@ void AsciiTable::recalculateColumns()
 int AsciiTable::getColumns()
 {
     return m_columns;
-}
-
-void AsciiTable::formatChanged() {
-
 }
